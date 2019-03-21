@@ -686,7 +686,7 @@ if __name__ == '__main__':
                     precio, bonif, iva_id, imp_iva, importe, despacho)
 
             sired.AgregarDato("prueba", "1234")
-            print "Prueba!"
+            print ("Prueba!")
             id_factura = sired.GuardarFactura()
             fact = sired.factura.copy()
             ok = sired.ObtenerFactura(id_factura)
@@ -714,7 +714,7 @@ if __name__ == '__main__':
                                 difs.append(("Dif", prefijo, k, d1[k], d2[k]))
             cmp_dict(fact, f)
             for dif in difs:
-                print dif
+                print (dif)
                 
             sired.EstablecerParametro("cae", "61123022925855")
             sired.EstablecerParametro("fch_venc_cae", "20110320")
@@ -747,9 +747,9 @@ if __name__ == '__main__':
 
                     if '--completar_padron' in sys.argv:
                         cuit = datos['nro_doc']
-                        print "Consultando AFIP online...", cuit,
+                        print ("Consultando AFIP online...", cuit,)
                         ok = padron.Consultar(cuit)
-                        print padron.direccion, padron.provincia
+                        print (padron.direccion, padron.provincia)
                         datos["nombre_cliente"] = padron.denominacion.encode("latin1")
                         datos["domicilio_cliente"] = padron.direccion.encode("latin1")
                         datos["localidad_cliente"] = "%s (CP %s) " % (
@@ -773,7 +773,7 @@ if __name__ == '__main__':
                             if isinstance(v, str):
                                 v = v.decode("latin1", "ignore")
                             factura[k] = unicodedata.normalize('NFKD', v).encode('ASCII', 'ignore')
-                            print k,factura[k]
+                            print (k,factura[k])
                         # convertir tipos de datos desde los strings del CSV
                         if k.startswith("imp"):
                             factura[k] = float(v)
@@ -793,10 +793,10 @@ if __name__ == '__main__':
                                )
                     for prefijo in prefijos:
                         fn = os.path.join(ruta, "%s.csv" % (prefijo % factura))
-                        print "Detalle: ", fn
+                        print ("Detalle: ", fn)
                         if os.path.exists(fn):
                             det = fn
-                            print "encontrado!"
+                            print("encontrado!")
                             break
                     else:
                         if 'detalles' in entrada:
@@ -813,7 +813,7 @@ if __name__ == '__main__':
                             det['ds'] = det['ds'].decode("latin1", "ignore")
                         if 'ds' in det:
                             det['ds'] = unicodedata.normalize('NFKD', det['ds']).encode('ASCII', 'ignore')
-                        print det
+                        print(det)
                         if iva_id:
                             iva_id = int(iva_id)
                             if iva_id not in ivas:
@@ -834,7 +834,7 @@ if __name__ == '__main__':
                                     else:
                                         neto = importe
                                         iva = round(neto * alicuotas[iva_id] /100., 2)
-                                    print "importe iva calc:", importe, iva
+                                    print("importe iva calc:", importe, iva)
                                 else:
                                     neto = importe
                                     # descontar IVA incluido factura B:
@@ -851,7 +851,7 @@ if __name__ == '__main__':
                     factura['datos'] = []
                     factura['tributos'] = []
                     if 'imp_iva' not in factura or factura['imp_iva'] == "":
-                        print "debe agregar el IVA total en el encabezado..."
+                        print("debe agregar el IVA total en el encabezado...")
                         factura['imp_iva'] = imp_iva
                     if 'cbt_numero' in factura:
                         factura['cbt_desde'] = factura['cbt_numero']
@@ -871,21 +871,21 @@ if __name__ == '__main__':
                 items = leer_json(entrada['encabezados'])
 
                 
-            print "Generando encabezado..."
+            print("Generando encabezado...")
             generar_encabezado(items)
-            print "Generando detalle..."
+            print("Generando detalle...")
             generar_detalle(items)
-            print "Generando ventas..."
+            print("Generando ventas...")
             generar_ventas(items)
             if '--json' in sys.argv:
                 grabar_json()
 
-        print "Hecho."
-    except Exception, e:
+        print("Hecho.")
+    except Exception as e:
         if '--debug' in sys.argv:
             raise
-        print "Error: por favor corriga los datos y vuelva a intentar:"
-        print str(e)
+        print("Error: por favor corriga los datos y vuelva a intentar:")
+        print(str(e))
         f = open("traceback.txt", "w+")
         import traceback
         traceback.print_exc(file=f)
